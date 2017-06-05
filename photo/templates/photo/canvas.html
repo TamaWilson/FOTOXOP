@@ -1,0 +1,297 @@
+
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% if uploaded_file_url %}
+
+<div class="container">
+    <h1>Editar imagem</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-9">
+    <div id="container-image"><img id="canvas" src="{{ uploaded_file_url }}"> </img></div>
+</div>
+<div class="col-md-3">
+<div class="row">
+
+<label>Ângulo:</label>
+	<select id="angle">
+    <option value="90">90ºAH</option>
+    <option value="270">90ºH</option>
+	<option value="180">180º</option>
+</select>
+	<button id="rotate"  class="btn btn-default">ROTACIONAR</button>
+</div>
+	<br />
+	<div class="row">
+		<button id="mirror"  class="btn btn-default">ESPELHAR</button>
+	</div>
+	<hr />
+<div class="row">
+    <button id="invert" class="btn btn-default">INVERTER CORES</button>
+</div>
+	<hr/>
+<div class="row">
+    <label>Contraste:</label><input id="contrastLevel" type="range" />
+    <button id="contrast" class="btn btn-default">Aplicar</button>
+</div>
+<div class="row">
+    <label>Brilho:</label> <input id="brighttLevel" type="range" />
+    <button id="bright" class="btn btn-default">Aplicar</button>
+</div>
+<div class="row">
+    <label>Cor:</label> <input id="colortLevel" type="range" />
+    <button id="color" class="btn btn-default">Aplicar</button>
+</div>
+<hr/>
+<div class="row">
+    <button id="grey" class="btn btn-default">ESCALA DE CINZA</button>
+</div>
+<hr />
+<div class="row">
+	<div>
+    <label>Largura:</label> <input type="number" id="width" value="{{width}}" max="750"/>
+    </div>
+	<div>
+		<label>Altura:</label> <input type="number" id="height" value="{{height}}"/>
+    </div>
+		<button id="resize" class="btn btn-default">RESIZE</button>
+</div>
+<hr/>
+<div class="row">
+    <button class="channel btn btn-danger" value="R" c >R</button>
+    <button class="channel btn btn-success"  value="G"   >G</button>
+    <button class="channel btn btn-primary" value="B"   >B</button>
+    <button id="RBG" class="btn btn-default">RBG</button>
+</div>
+
+</div>
+    </div>
+    </div>
+{% endif %}
+
+<script>
+
+    var file = '{{ uploaded_filename }}';
+    var urlFile = '{{ uploaded_file_url }}';
+
+
+    $('#rotate').on('click',
+        function(e) {
+
+        angle = $('#angle').val()
+
+        $.ajax({
+						url : '/fotoxop/rotate/',
+						type : 'POST',
+						data : {
+							angle : angle,
+							filename: file,
+							function: 'rotate'
+						}
+
+    }).done(
+							function(data) {
+							$("#container-image").html(data);
+							$("#canvas").attr('src', urlFile + '?' + new Date().getTime());
+
+							});
+      });
+
+       $('#invert').on('click',
+        function(e) {
+
+
+        $.ajax({
+						url : '/fotoxop/invert/',
+						type : 'POST',
+						data : {
+							filename: file
+						}
+
+    }).done(
+							function(data) {
+							$("#container-image").html(data);
+							$("#canvas").attr('src', urlFile + '?' + new Date().getTime());
+
+							});
+      });
+
+
+ $('#contrast').on('click',
+        function(e) {
+
+
+
+        contrastLevel =  $('#contrastLevel').val();
+
+
+        $.ajax({
+						url : '/fotoxop/contrast/',
+						type : 'POST',
+						data : {
+							filename: file,
+							level  : contrastLevel
+						}
+
+    }).done(
+							function(data) {
+							$("#container-image").html(data);
+							$("#canvas").attr('src', urlFile + '?' + new Date().getTime());
+
+							});
+      });
+
+$('#bright').on('click',
+        function(e) {
+
+
+
+        brighttLevel =  $('#brighttLevel').val();
+
+
+        $.ajax({
+						url : '/fotoxop/bright/',
+						type : 'POST',
+						data : {
+							filename: file,
+							level  : brighttLevel
+						}
+
+    }).done(
+							function(data) {
+							$("#container-image").html(data);
+							$("#canvas").attr('src', urlFile + '?' + new Date().getTime());
+
+							});
+      });
+
+
+$('#color').on('click',
+        function(e) {
+
+
+
+        colortLevel =  $('#colortLevel').val();
+
+
+        $.ajax({
+						url : '/fotoxop/color/',
+						type : 'POST',
+						data : {
+							filename: file,
+							level  : colortLevel
+						}
+
+    }).done(
+							function(data) {
+							$("#container-image").html(data);
+							$("#canvas").attr('src', urlFile + '?' + new Date().getTime());
+
+							});
+      });
+
+
+
+  $('#grey').on('click',
+        function(e) {
+
+
+        $.ajax({
+						url : '/fotoxop/grey/',
+						type : 'POST',
+						data : {
+							filename: file
+						}
+
+    }).done(
+							function(data) {
+							$("#container-image").html(data);
+							$("#canvas").attr('src', urlFile + '?' + new Date().getTime());
+
+							});
+      });
+
+$('#resize').on('click',
+        function(e) {
+
+    sizeW = $('#width').val();
+            sizeH = $('#height').val();
+
+        $.ajax({
+						url : '/fotoxop/resize/',
+						type : 'POST',
+						data : {
+							filename: file,
+							width: sizeW,
+							height: sizeH
+						}
+
+    }).done(
+							function(data) {
+							$("#container-image").html(data);
+							$("#canvas").attr('src', urlFile + '?' + new Date().getTime());
+
+							});
+      });
+
+$('.channel').on('click',
+        function(e) {
+        chValue = this.value;
+
+
+        $.ajax({
+						url : '/fotoxop/channel/',
+						type : 'POST',
+						data : {
+							filename: file,
+							channel: chValue,
+
+						}
+
+    }).done(
+							function(data) {
+							$("#container-image").html(data);
+							urlChannel =  $("#canvas").attr('src');
+							$("#canvas").attr('src', urlChannel + '?' + new Date().getTime());
+
+							});
+
+      });
+
+$('#RBG').on('click',
+        function(e) {
+
+        $("#canvas").attr('src', urlFile + '?' + new Date().getTime());
+
+        });
+
+$('#mirror').on('click',
+        function(e) {
+
+        $.ajax({
+						url : '/fotoxop/mirror/',
+						type : 'POST',
+						data : {
+							filename: file,
+
+						}
+
+    }).done(
+							function(data) {
+							$("#container-image").html(data);
+							$("#canvas").attr('src', urlFile + '?' + new Date().getTime());
+							});
+
+      });
+
+
+
+</script>
+
+
+
+{% endblock %}

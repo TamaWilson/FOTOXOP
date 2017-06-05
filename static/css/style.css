@@ -1,0 +1,31 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 145px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 135px;
+  background-color: #004b82;
+}
+
+.text-muted {
+  color:  #fff;
+}
+
+.navbar-inverse {
+    background-color: #004b82;
+    border-color: #004b82;
+}
+
+
+.footer-separator {
+
+	height: 15px;
+}
