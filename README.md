@@ -1,4 +1,4 @@
-#UTILZIADO
+#UTILIZADO
 
 - Python 3.5
 - Django 1.10 - Framework Python para web
