@@ -1,11 +1,11 @@
 
-{% extends 'layout.html' %}
+{% extends 'layout.html' %} <!-- carrega o layout padrao -->
 
-{% load static %}
+{% load static %} <!-- carrega os arquivos estáticos -->
 
-{% block content %}
+{% block content %} <!-- marca o bloco de conteúdo -->
 
-{% if uploaded_file_url %}
+{% if uploaded_file_url %} <!-- se um arquivo foi carregado exibe o bloco abaixo -->
 
 <div class="container">
     <h1>Editar imagem</h1>
@@ -75,9 +75,12 @@
 
 <script>
 
-    var file = '{{ uploaded_filename }}';
-    var urlFile = '{{ uploaded_file_url }}';
+    var file = '{{ uploaded_filename }}'; //nome do arquivo
+    var urlFile = '{{ uploaded_file_url }}'; //URL do arquivo
 
+	//JQUERY PARA FAZZER A REQUISIÇÃO AJAX
+	//CADA BOTÃO TEM SEU LISTENER
+	//VIDE EXCEÇÃO DO BOTÃO RGB
 
     $('#rotate').on('click',
         function(e) {
@@ -262,6 +265,9 @@ $('.channel').on('click',
 
       });
 
+
+//QUANDO RGB É CLICADO ATUALIZA O CANVAS PARA O ARQUIVO COM TODOS OS CANAIS, NÃO É NECESSÁRIO REQUISITAR PARA O SERVIDOR
+// AS VARIAVEIS DEFINIDAS NO TOPO DO BLOCO POSSUEM A REFERÊNCIA INALTERADA DO ARQUIVO DE IMAGEM COM OS 3 CANAIS
 $('#RBG').on('click',
         function(e) {
 

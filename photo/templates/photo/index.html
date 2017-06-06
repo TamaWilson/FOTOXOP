@@ -1,11 +1,13 @@
-{% extends 'layout.html' %}
+{% extends 'layout.html' %} <!-- carrega o layout padrao -->
 
-{% load static %}
+{% load static %} <!-- carrega os arquivos estáticos -->
 
-{% block content %}
+{% block content %} <!-- inicia o bloco de conteudo -->
 <div class="container">
   <H1>Carregar imagem</H1>
   <hr/>
+
+  <!-- Formulario para enviar a imagem -->
   <form action="upload/" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="myfile">
