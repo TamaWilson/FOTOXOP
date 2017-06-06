@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^resize/', views.resize, name='resize'),
     url(r'^channel/', views.channel, name='channel'),
 	url(r'^mirror/', views.mirror, name='mirror'),
+    url(r'^reset/', views.reset, name='reset'),
 ]
