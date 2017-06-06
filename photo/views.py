@@ -22,8 +22,6 @@ def upload(request):
         #instancia uma variavel com o conteúdo do dicionario de arquivos
         myfile = request.FILES['myfile']
 
-        print(type(myfile))
-
         #instancia um objeto para manipular o armazenamento de arquivos
         fs = FileSystemStorage()
 
