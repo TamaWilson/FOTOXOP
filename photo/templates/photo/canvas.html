@@ -8,8 +8,15 @@
 {% if uploaded_file_url %} <!-- se um arquivo foi carregado exibe o bloco abaixo -->
 
 <div class="container">
-    <h1>Editar imagem</h1>
-    <hr />
+
+    <div class="clearfix">
+
+		<h1 class="pull-left" >Editar imagem</h1>
+
+		<button style="margin-top: 20px;" class="btn btn-default pull-right" id="reset">RESETAR</button>
+	    <a style="margin-top: 20px;margin-right: 10px" class="btn btn-success pull-right" id="saveAs" href="#" download>SALVAR</a>
+    </div>
+		<hr />
     <div class="row">
         <div class="col-md-9">
     <div id="container-image"><img id="canvas" src="{{ uploaded_file_url }}"> </img></div>
@@ -71,7 +78,6 @@
 </div>
     </div>
     </div>
-{% endif %}
 
 <script>
 
@@ -294,10 +300,36 @@ $('#mirror').on('click',
 
       });
 
+$('#reset').on('click',
+        function(e) {
 
+        $.ajax({
+						url : '/fotoxop/reset/',
+						type : 'POST',
+						data : {
+							filename: file,
 
+						}
+
+    }).done(
+							function(data) {
+							$("#container-image").html(data);
+							$("#canvas").attr('src', urlFile + '?' + new Date().getTime());
+							});
+
+      });
+
+ $('#saveAs').on('click',
+        function(e) {
+
+			img = $("#canvas").attr('src');
+	        this.href = img;
+
+});
 </script>
 
+
+{% endif %}
 
 
 {% endblock %}

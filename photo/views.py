@@ -28,11 +28,17 @@ def upload(request):
         #salva o arquivo enviado com o nome original
         filename = fs.save(myfile.name, myfile)
 
+        #SALVA UMA COPiA DO ARQUIVO ORIGINAL
+        original_file = fs.base_location + "\\ORIGINAL_" + myfile.name
+
+        fs.save(original_file, myfile)
+
         #captura a url do arquivo
         uploaded_file_url = fs.url(filename)
 
         #abre o arquivo com PIL passando o caminho absoluto para o arquivo no servidor
         image = Image.open(fs.base_location + "\\" + filename)
+
 
         #utiliza a propriedade size para retornar a altura e largura da imagem
         #image.size retorna uma tupla
@@ -158,6 +164,7 @@ def bright(request):
 
         fs = FileSystemStorage()
         filename = fs.base_location + "\\" + myfile
+
 
         image = Image.open(filename)
 
@@ -310,3 +317,25 @@ def mirror(request):
             'uploaded_file_url': uploaded_file_url
         })
     return redirect('/fotoxop')
+
+@csrf_exempt
+def reset(request):
+    if request.method == 'POST':
+        myfile = request.POST['filename']
+
+        fs = FileSystemStorage()
+        filename = fs.base_location + "\\" + myfile
+
+        original_filename = fs.base_location + "\\ORIGINAL_" + myfile
+
+        original_file = fs.open(original_filename)
+
+        fs.delete(filename)
+
+        fs.save(filename, original_file)
+
+        uploaded_file_url = fs.url(filename)
+
+        return render_to_response('photo/updated.html', {
+            'uploaded_file_url': uploaded_file_url
+        })
